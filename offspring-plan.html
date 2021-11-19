@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,view-scale=1.0">
+    <title>子女教育规划试算</title>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <h3 class="text-center">子女教育规划试算</h3>
+    <div>
+        <form class="-form-horizontal">
+
+            <div class="clearfix row clearfix">
+                <div class="form-group clearfix col-xs-6">
+                    <label class="control-label">通货膨胀率</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="inflation-rate" name="inflation-rate"
+                               placeholder="通货膨胀率" value="4" min="0"/>
+                        <div class="input-group-addon">%</div>
+                    </div>
+                </div>
+                <div class="form-group col-xs-6">
+                    <label class="control-label">收益率</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="retirement-after-rate" min="0"
+                               placeholder="退休后收益率"
+                               value="6">
+                        <div class="input-group-addon">%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="control-label">单笔金额</label>
+                <div class="input-group col-xs-12">
+                    <input type="number" class="form-control" name="existing-sum" min="0" placeholder="退休后收益率" value="">
+                    <div class="input-group-addon">万</div>
+                </div>
+            </div>
+            <div class="form-group row clearfix">
+                <div class="col-xs-6 clearfix">
+                    <label class="control-label">定投金额</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" min="0" name="phase1-amount" placeholder="金额"
+                               value="">
+                        <div class="input-group-addon">万</div>
+                    </div>
+                </div>
+                <div class="col-xs-6 clearfix">
+                    <label class="control-label">定投年限</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control col-xs-12" name="phase1-years"
+                               placeholder="年限" value="">
+                        <div class="input-group-addon">年</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label class="control-label">生命周期(最终年龄)</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" min="0" name="end-age" placeholder="生命周期" value="">
+                    <div class="input-group-addon">岁</div>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label class="control-label">退休后支出缺口(现值)(每年日常花费)</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" min="0" name="retirement-cost"
+                           placeholder="退休后支出缺口(现值)" value="">
+                    <div class="input-group-addon">万</div>
+                </div>
+            </div>
+        </form>
+        <button id="calc" class="btn btn-success col-xs-12" style="margin-bottom: 2em;">计算</button>
+    </div>
+    <div id="result"></div>
+</div>
+</body>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var $phaseYear1 = $("input[name='phase1-years']"),
+            $phaseYear2 = $("input[name='phase2-years']"),
+            $startAge = $("input[name='start-age']"),
+            $endAge = $("input[name='end-age']"),
+            $infRate = $("input[name='inflation-rate']"),
+            $retBeforeRate = $("input[name='retirement-before-rate']"),
+            $retAfterRate = $("input[name='retirement-after-rate']"),
+            $existingSum = $("input[name='existing-sum']"),
+            $retAge = $("input[name='retirement-age']"),
+            $phaseAmount1 = $("input[name='phase1-amount']"),
+            $phaseAmount2 = $("input[name='phase2-amount']"),
+            $retCost = $("input[name='retirement-cost']");
+
+        var startAge = $startAge.val();
+        var retAge = $retAge.val();
+        var phaseYear1 = $phaseYear1.val();
+
+        $("input[name='start-age'],input[name='retirement-age']").on("input", function () {
+            var startAge = $startAge.val();
+            var retAge = $retAge.val();
+            var diff = retAge - startAge > 0 ? retAge - startAge : 0;
+            $phaseYear1.val(diff - $phaseYear2.val());
+        });
+
+        $phaseYear1.on("input", function () {
+            var startAge = $startAge.val();
+            var retAge = $retAge.val();
+            var year1 = $phaseYear1.val();
+            var diff = retAge - startAge > 0 ? retAge - startAge : 0;
+            $phaseYear2.val(diff - year1);
+        });
+        $phaseYear2.on("input", function () {
+            var startAge = $startAge.val();
+            var retAge = $retAge.val();
+            var year2 = $phaseYear2.val();
+            var diff = retAge - startAge > 0 ? retAge - startAge : 0;
+            $phaseYear1.val(diff - year2);
+        });
+
+        $("#calc").on("click", function () {
+            var obj = new Yanglao({
+                infRate: parseFloat($infRate.val()),
+                retBeforeRate: parseFloat($retBeforeRate.val()),
+                retAfterRate: parseFloat($retAfterRate.val()),
+                existingSum: parseFloat($existingSum.val()),
+                phaseAmount1: parseFloat($phaseAmount1.val()),
+                phaseAmount2: parseFloat($phaseAmount2.val()),
+                phaseYear1: parseInt($phaseYear1.val()),
+                phaseYear2: parseInt($phaseYear2.val()),
+                startAge: parseInt($startAge.val()),
+                endAge: parseInt($endAge.val()),
+                retAge: parseInt($retAge.val()),
+                retCost: parseFloat($retCost.val())
+            })
+            obj.calc();
+            var $result = $("#result"),
+                top = $result.offset().top;
+            $result.empty().append(obj.toHtml());
+            $(window).scrollTop(top);
+        });
+    })
+
+    Yanglao = function (opts) {
+        this.infRate = 0;
+        this.retBeforeRate = 0;
+        this.retAfterRate = 0;
+        this.existingSum = 0;
+        this.phaseAmount1 = 0;
+        this.phaseAmount2 = 0;
+        this.phaseYear1 = 0;
+        this.phaseYear2 = 0;
+        this.startAge = 0;
+        this.endAge = 0;
+        this.retAge = 0;
+        this.retCost = 0;
+
+        this.balanceArr = [];
+        this.balance = 0;
+
+        if (opts) {
+            for (let key in opts) {
+                this[key] = isNaN(opts[key]) ? 0 : opts[key];
+            }
+        }
+
+        this.ageDiff = this.retAge - this.startAge;
+
+        //this.init();
+    }
+
+    Yanglao.prototype.init = function () {
+        this.calc();
+    }
+
+    Yanglao.prototype.calc = function () {
+
+        var balance = 0;
+        // 退休前每年的前 计算
+        for (var i = 0; i < this.ageDiff; i++) {
+
+            var input = 0, output = 0;
+            if (i === 0) {
+                //balance = balance + this.existingSum + this.phaseAmount1;
+                input = this.existingSum + this.phaseAmount1;
+            } else {
+                if (i < this.phaseYear1) {
+                    //balance = (balance + this.phaseAmount1) * (1 + this.retBeforeRate / 100);
+                    input = this.phaseAmount1;
+                } else {
+                    //balance = (balance + this.phaseAmount2) * (1 + this.retBeforeRate / 100);
+                    input = this.phaseAmount2;
+                }
+            }
+            balance = this.calcCPI((balance + input + output), this.retBeforeRate, 1);
+            var item = {
+                age: this.startAge + i,
+                input: input.toFixed(2),
+                output: output.toFixed(2),
+                balance: balance.toFixed(2)
+            }
+            this.balanceArr.push(item);
+            console.log(item)
+        }
+
+        // 退休后每年的前 计算
+        var len = this.endAge - this.retAge > 0 ? this.endAge - this.retAge : 0;
+        for (var x = 0; x <= len; x++) {
+            var input = 0,
+                age = this.retAge + x,
+                output = -1 * this.calcCPI(this.retCost, this.infRate, age - this.startAge);
+            balance = this.calcCPI((balance + input + output), this.retAfterRate, 1);
+            var item = {age: age, input: input.toFixed(2), output: output.toFixed(2), balance: balance.toFixed(2)}
+            this.balanceArr.push(item);
+            console.log(item)
+        }
+    }
+
+    Yanglao.prototype.calcCPI = function (capital, rate, _time) {
+        return capital * Math.pow((1 + (rate / 100)), parseInt(_time));
+    }
+
+    Yanglao.prototype.toHtml = function () {
+        var $html = $("<table class='table table-striped'></table>"),
+            len = this.balanceArr.length;
+
+        $html.append("<thead><tr><th>年龄</th><th>投入</th><th>支出</th><th>净投入</th><th>余额</th></tr></thead>");
+
+        var body = "<tbody>"
+        for (var i = 0; i < len; i++) {
+            var item = this.balanceArr[i],
+                diff = parseFloat(item['input']) + parseFloat(item['output']);
+
+            body += "<tr>";
+            body += "<td>" + item['age'] + "</td>";
+            body += "<td>" + item['input'] + "</td>";
+            body += "<td>" + item['output'] + "</td>";
+            body += "<td>" + diff + "</td>";
+            body += "<td>" + item['balance'] + "</td>";
+            body += "</tr>";
+        }
+
+        body += "</tbody>";
+
+        $html = $html.append(body);
+        return $html;
+    }
+</script>
+</html>
