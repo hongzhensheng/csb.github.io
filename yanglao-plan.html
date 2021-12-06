@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,view-scale=1.0">
+    <title>养老规划试算</title>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7/css/bootstrap.min.css"/>
+</head>
+<style>
+    .require:before {
+        content: "*";
+        color: red;
+        font-size: 1.5rem;
+        margin-right: .5rem;
+    }
+
+    .c-btn-group .btn {
+        margin-bottom: 1rem;
+    }
+</style>
+<body>
+<div class="container" style="overflow-x: hidden">
+    <div class="text-center">
+        <a class="pull-left" href="./index.html" title="首页"><i class="glyphicon glyphicon-home"></i>首页</a>
+        <h3>养老规划试算</h3>
+    </div>
+    <div>
+        <form class="-form-horizontal">
+            <div class="form-group clearfix">
+                <label class="control-label require" for="inflation-rate" data-tips="通货膨胀率不能為空!">通货膨胀率</label>
+                <div class="input-group col-xs-12">
+                    <input type="number" class="form-control" id="inflation-rate" name="inflation-rate"
+                           placeholder="通货膨胀率" value="4" min="0"/>
+                    <div class="input-group-addon">%</div>
+                </div>
+            </div>
+            <div class="clearfix row clearfix">
+                <div class="form-group col-xs-6">
+                    <label class="control-label require" for="retirement-before-rate"
+                           data-tips="退休前收益率不能為空!">退休前收益率</label>
+                    <div class="input-group col-xs-12 ">
+                        <input type="number" class="form-control" id="retirement-before-rate"
+                               name="retirement-before-rate" placeholder="退休前收益率" min="0" value="8"/>
+                        <div class="input-group-addon">%</div>
+                    </div>
+                </div>
+                <div class="form-group col-xs-6">
+                    <label class="control-label -require" for="retirement-after-rate"
+                           data-tips="退休后收益率不能為空!">退休后收益率</label>
+                    <div class="input-group col-xs-12">
+                        <input type="number" class="form-control" name="retirement-after-rate" min="0"
+                               placeholder="退休后收益率" id="retirement-after-rate"
+                               value="6">
+                        <div class="input-group-addon">%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="control-label">单笔金额(已有可投资存款)</label>
+                <div class="input-group col-xs-12">
+                    <input type="number" class="form-control" name="existing-sum" min="0" placeholder="已有可投资存款"
+                           value="">
+                    <div class="input-group-addon">万</div>
+                </div>
+            </div>
+            <div class="clearfix row">
+                <div class="form-group clearfix col-xs-6">
+                    <label class="control-label require" for="start-age" data-tips="开始准备退休年龄不能為空!">开始准备退休年龄</label>
+                    <div class="input-group">
+                        <input id="start-age" type="number" class="form-control" min="0" name="start-age"
+                               placeholder="开始准备退休年龄"
+                               value="">
+                        <div class="input-group-addon">岁</div>
+                    </div>
+                </div>
+
+                <div class="form-group clearfix col-xs-6">
+                    <label class="control-label require" for="retirement-age" data-tips="退休年龄不能為空!">退休年龄</label>
+                    <div class="input-group">
+                        <input id="retirement-age" type="number" class="form-control" min="0" name="retirement-age"
+                               placeholder="退休年龄"
+                               value="">
+                        <div class="input-group-addon">岁</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="control-label">定投金额</label>
+                <div class="clearfix">
+                    <label class="control-label">阶段1</label>
+                    <div class="form-group row clearfix">
+                        <div class="col-xs-6 clearfix">
+                            <label class="control-label require" for="phase1-amount" data-tips="阶段1金额不能為空!">金额</label>
+                            <div class="input-group">
+                                <input id="phase1-amount" type="number" class="form-control"
+                                       name="phase1-amount" placeholder="金额"
+                                       value="" min="0">
+                                <div class="input-group-addon">万</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 clearfix">
+                            <label class="control-label require" for="phase1-years" data-tips="阶段1年限不能為空!">年限</label>
+                            <div class="input-group">
+                                <input id="phase1-years" type="number" class="form-control col-xs-12"
+                                       name="phase1-years"
+                                       placeholder="年限" value="" min="0">
+                                <div class="input-group-addon">年</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label class="control-label">阶段2</label>
+                    <div class="form-group row clearfix">
+                        <div class="col-xs-6 clearfix">
+                            <label class="control-label">金额</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="phase2-amount" placeholder="金额"
+                                       value="" min="0">
+                                <div class="input-group-addon">万</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 clearfix">
+                            <label class="control-label">年限</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control col-xs-12" name="phase2-years"
+                                       placeholder="年限" value="" min="0">
+                                <div class="input-group-addon">年</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label class="control-label require" for="end-age" data-tips="生命周期不能為空!">生命周期(最终年龄)</label>
+                <div class="input-group">
+                    <input id="end-age" type="number" class="form-control" min="0" name="end-age" placeholder="生命周期"
+                           value="">
+                    <div class="input-group-addon">岁</div>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label class="control-label require" for="retirement-cost"
+                       data-tips="退休后支出缺口不能為空!">退休后支出缺口(现值)(每年日常花费)</label>
+                <div class="input-group">
+                    <input id="retirement-cost" type="number" class="form-control" min="0" name="retirement-cost"
+                           placeholder="退休后支出缺口(现值)" value="">
+                    <div class="input-group-addon">万</div>
+                </div>
+            </div>
+        </form>
+        <div class="clearfix c-btn-group" style="margin-bottom: 2em;">
+            <button id="calc" class="btn btn-success col-xs-12">计算结果明细</button>
+            <button id="calc2" class="btn btn-success col-xs-12 -hidden">计算最优定投金额</button>
+            <button id="clear" class="btn btn-warning col-xs-12 -hidden">重置</button>
+        </div>
+    </div>
+    <div id="result">
+        <div class="summary">
+            <p class="dingtou hidden"><b>定投金额：</b><span>0</span></p>
+            <p class="investmentSum"><b>总投入(万元)：</b><span>0</span></p>
+            <p class="spendingSum"><b>总支出(万元)：</b><span>0</span></p>
+            <p class="balance"><b>余额(万元)：</b><span>0</span></p>
+        </div>
+        <div class="detail" style="overflow-x: auto"></div>
+    </div>
+</div>
+
+<div id="alert-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="alertModalLabel">Tips</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var $phaseYear1 = $("input[name='phase1-years']"),
+            $phaseYear2 = $("input[name='phase2-years']"),
+            $startAge = $("input[name='start-age']"),
+            $endAge = $("input[name='end-age']"),
+            $infRate = $("input[name='inflation-rate']"),
+            $retBeforeRate = $("input[name='retirement-before-rate']"),
+            $retAfterRate = $("input[name='retirement-after-rate']"),
+            $existingSum = $("input[name='existing-sum']"),
+            $retAge = $("input[name='retirement-age']"),
+            $phaseAmount1 = $("input[name='phase1-amount']"),
+            $phaseAmount2 = $("input[name='phase2-amount']"),
+            $retCost = $("input[name='retirement-cost']");
+
+        var startAge = $startAge.val();
+        var retAge = $retAge.val();
+        var phaseYear1 = $phaseYear1.val();
+
+        (function () {
+            if (startAge > 0 && retAge > 0) {
+                var diff = retAge - startAge > 0 ? retAge - startAge : 0;
+                $phaseYear1.val(diff - $phaseYear2.val());
+            }
+        })();
+
+        $("input[name='start-age'],input[name='retirement-age']").on("input", function () {
+            var startAge = $startAge.val();
+            var retAge = $retAge.val();
+            var diff = retAge - startAge > 0 ? retAge - startAge : 0;
+            $phaseYear1.val(diff - $phaseYear2.val());
+        });
+
+        $phaseYear1.on("input", function () {
+            var startAge = $startAge.val();
+            var retAge = $retAge.val();
+            var year1 = $phaseYear1.val();
+            var diff = retAge - startAge > 0 ? retAge - startAge : 0;
+            $phaseYear2.val(diff - year1);
+        });
+        $phaseYear2.on("input", function () {
+            var startAge = $startAge.val();
+            var retAge = $retAge.val();
+            var year2 = $phaseYear2.val();
+            var diff = retAge - startAge > 0 ? retAge - startAge : 0;
+            $phaseYear1.val(diff - year2);
+        });
+
+
+        var $investmentSum = $(".investmentSum>span"),
+            $spendingSum = $(".spendingSum>span"),
+            $detail = $(".detail"),
+            $balance = $(".balance>span"),
+            $alertModal = $('#alert-modal');
+        $("#clear").on("click", function () {
+            var $els = [$phaseYear1, $phaseYear2, $startAge, $endAge, $existingSum, $retAge, $phaseAmount1, $phaseAmount2, $retCost];
+            for (var i = 0; i < $els.length; i++) {
+                $els[i].val('');
+            }
+        });
+        $("#calc").on("click", function () {
+            var error = checkInput();
+            if (error.length > 0) {
+                //alert(error);
+                $alertModal.find('.modal-body').html(error);
+                $alertModal.modal();
+                return false;
+            }
+
+            var obj = new Yanglao({
+                infRate: parseFloat($infRate.val()),
+                retBeforeRate: parseFloat($retBeforeRate.val()),
+                retAfterRate: parseFloat($retAfterRate.val()),
+                existingSum: parseFloat($existingSum.val()),
+                phaseAmount1: parseFloat($phaseAmount1.val()),
+                phaseAmount2: parseFloat($phaseAmount2.val()),
+                phaseYear1: parseInt($phaseYear1.val()),
+                phaseYear2: parseInt($phaseYear2.val()),
+                startAge: parseInt($startAge.val()),
+                endAge: parseInt($endAge.val()),
+                retAge: parseInt($retAge.val()),
+                retCost: parseFloat($retCost.val())
+            })
+            obj.calc();
+            var $result = $("#result"),
+                top = $result.offset().top;
+            $investmentSum.empty().append(obj.getInputSum());
+            $spendingSum.empty().append(obj.getOutputSum());
+            $balance.empty().append(obj.getBalance());
+            $detail.empty().append(obj.toHtml());
+            $(window).scrollTop(top);
+        });
+
+        $("#calc2").on("click", function () {
+            if (($phaseAmount1.val() > 0 && $phaseAmount2.val() > 0)) {
+                alert("请设置 阶段1 或 阶段2 的定投金额，至少一个为0!")
+                return false;
+            } else if ($phaseAmount1.val() == '' && $phaseAmount2.val() == '') {
+                alert("请设置 阶段1 或 阶段2 的定投金额，不能同时为 空!")
+                return false;
+            }
+            $phaseAmount2.val() > 0 && $phaseAmount1.val(0);
+
+            var error = checkInput();
+            if (error.length > 0) {
+                //alert(error);
+                $alertModal.find('.modal-body').html(error);
+                $alertModal.modal();
+                return false;
+            }
+
+            var obj = new Yanglao({
+                infRate: parseFloat($infRate.val()),
+                retBeforeRate: parseFloat($retBeforeRate.val()),
+                retAfterRate: parseFloat($retAfterRate.val()),
+                existingSum: parseFloat($existingSum.val()),
+                phaseAmount1: parseFloat($phaseAmount1.val()),
+                phaseAmount2: parseFloat($phaseAmount2.val()),
+                phaseYear1: parseInt($phaseYear1.val()),
+                phaseYear2: parseInt($phaseYear2.val()),
+                startAge: parseInt($startAge.val()),
+                endAge: parseInt($endAge.val()),
+                retAge: parseInt($retAge.val()),
+                retCost: parseFloat($retCost.val())
+            })
+            console.log(obj)
+            obj.calc2();
+            var $result = $("#result"),
+                top = $result.offset().top;
+
+            $investmentSum.empty().append(obj.getInputSum());
+            $spendingSum.empty().append(obj.getOutputSum());
+            $balance.empty().append(obj.getBalance());
+            $detail.empty().append(obj.toHtml());
+
+            $(window).scrollTop(top);
+
+            var tips = "";
+            /*setTimeout(function () {
+                alert(tips);
+            }, 0)*/
+
+            var dingtou = obj.getOptimalInvestments();
+            console.log(dingtou)
+            //$phaseAmount1.val(obj.getOptimalInvestment());
+            if (dingtou.level1 > 0) {
+                tips += "<p>当 <strong>阶段2</strong> 的定投金额为: " + obj.phaseAmount2 + " 时,</p>";
+                tips += "<p><strong>阶段1</strong> 的最佳定投金额为: " + dingtou.level1 + "</p>";
+                $phaseAmount1.val(dingtou.level1);
+            } else if (dingtou.level2 > 0) {
+                tips += "<p>当 <strong>阶段1</strong> 的定投金额为: " + obj.phaseAmount1 + " 时,</p>";
+                tips += "<p><strong>阶段2</strong> 的最佳定投金额为: " + dingtou.level2 + "</p>";
+                $phaseAmount2.val(dingtou.level2);
+            } else {
+                tips = "<p>最优的定投金额为：" + obj.getOptimalInvestment() + " !</p>";
+                $phaseAmount1.val(dingtou.level1);
+            }
+            $alertModal.find('.modal-body').html(tips);
+            $alertModal.modal();
+        })
+
+        function checkInput() {
+            var error = "";
+            $("label.require").each(function (i, item) {
+                var $el = $(item),
+                    $input = $("#" + $el.attr("for"));
+                var val = $input.val(),
+                    tips = $el.attr("data-tips");
+                if (val === '') {
+                    error += "<p>" + tips + "</p>";
+                }
+            });
+
+            return error;
+        }
+    })
+
+    Yanglao = function (opts) {
+        this.infRate = 0;
+        this.retBeforeRate = 0;
+        this.retAfterRate = 0;
+        this.existingSum = 0;
+        this.phaseAmount1 = 0;
+        this.phaseAmount2 = 0;
+        this.phaseYear1 = 0;
+        this.phaseYear2 = 0;
+        this.startAge = 0;
+        this.endAge = 0;
+        this.retAge = 0;
+        this.retCost = 0;
+
+        this.balanceArr = [];
+        this.balance = 0;
+        this.inputSum = 0;
+        this.outputSum = 0;
+
+        this.optimalInvestment = 0;
+        this.optimalInvestments = {level: 0, level1: 0, level2: 0};
+
+        if (opts) {
+            for (let key in opts) {
+                this[key] = isNaN(opts[key]) ? 0 : opts[key];
+            }
+        }
+
+        this.ageDiff = this.retAge - this.startAge;
+
+        //this.init();
+    }
+
+    Yanglao.prototype.init = function () {
+        this.calc();
+    }
+
+    Yanglao.prototype.calc = function () {
+        var balance = 0,
+            fixLen = 6,
+            balanceArr = [],
+            outputSum = 0,
+            inputSum = 0;
+
+        balance = 0;
+        var rate = this.retBeforeRate;
+        // 退休前每年的前 计算
+        for (var i = 0; i < this.ageDiff; i++) {
+            var input = 0,
+                output = 0,
+                item = {
+                    age: this.startAge + i, input: 0, inputLevel1: 0, inputLevel2: 0, output: 0,
+                    balance: balance.toFixed(fixLen),
+                    rate: rate
+                }
+
+            if (i === 0) {
+                //balance = balance + this.existingSum + this.phaseAmount1;
+                input = this.existingSum + this.phaseAmount1;
+                item['inputLevel1'] = this.phaseAmount1;
+            } else {
+                if (i < this.phaseYear1) {
+                    //balance = (balance + this.phaseAmount1) * (1 + this.retBeforeRate / 100);
+                    input = this.phaseAmount1;
+                    item['inputLevel1'] = this.phaseAmount1;
+                } else {
+                    //balance = (balance + this.phaseAmount2) * (1 + this.retBeforeRate / 100);
+                    input = this.phaseAmount2;
+                    item['inputLevel2'] = this.phaseAmount2;
+                }
+            }
+
+            inputSum += input;
+            balance = this.calcCPI((balance + input - output), rate, 1);
+            item['balance'] = balance.toFixed(fixLen);
+            item['input'] = input.toFixed(fixLen);
+
+            balanceArr.push(item);
+            console.log(item)
+        }
+
+        // 退休后每年的前 计算
+        var len = this.endAge - this.retAge > 0 ? this.endAge - this.retAge : 0;
+        for (var x = 0; x <= len; x++) {
+            var input = 0,
+                age = this.retAge + x,
+                output = this.calcCPI(this.retCost, this.infRate, age - this.startAge);
+            balance = this.calcCPI((balance + input - output), this.retAfterRate, 1);
+            var item = {
+                age: age,
+                input: input.toFixed(fixLen),
+                inputLevel1: 0, inputLevel2: 0,
+                output: output.toFixed(fixLen),
+                balance: balance.toFixed(fixLen)
+            }
+
+            outputSum += output;
+            balanceArr.push(item);
+            console.log(item)
+        }
+
+        this.balanceArr = balanceArr;
+        this.outputSum = outputSum;
+        this.inputSum = inputSum;
+        this.balance = balance;
+    }
+
+    Yanglao.prototype.calc2 = function () {
+
+        var balance = 0,
+            e6 = 1e6,
+            balanceArr = [],
+            outputSum = 0,
+            inputSum = 0;
+        var retAfterRate = (100 + this.retAfterRate) / 100,
+            retBeforerRate = (100 + this.retBeforeRate) / 100;
+
+        // 退休后每年的前 计算
+        for (var x = this.endAge; x >= this.retAge; x--) {
+            var input = 0,
+                age = x,
+                output = this.calcCPI(this.retCost, this.infRate, age - this.startAge);
+
+            var l = balanceArr.length,
+                prevIndex = l > 0 ? l - 1 : 0,
+                prevBalance = 0, prevOutput = 0;
+
+            if (l > 0) {
+                prevBalance = balanceArr[prevIndex]["balance"];
+                prevOutput = balanceArr[prevIndex]["output"];
+            }
+            //console.log(x, "prevBalance:", prevBalance, "; prevOutput:", prevOutput, retAfterRate, output);
+
+            if (x === this.endAge) {
+                balance = 0;
+            } else {
+                balance = ((prevBalance * e6 + prevOutput * retAfterRate * e6) / e6) / retAfterRate;
+            }
+
+            var item = {age: age, input: input, inputLevel1: 0, inputLevel2: 0, output: output, balance: balance}
+
+            outputSum += output;
+            balanceArr.push(item);
+            //console.log(item);
+            //console.log();
+        }
+
+        var balanceRetAfterFirstItem = balanceArr[balanceArr.length - 1],
+            balanceRetAfterFirst = parseFloat(balanceRetAfterFirstItem['balance']),
+            opBeforeLast = parseFloat(balanceRetAfterFirstItem['output']);
+
+        //console.log(balanceRetAfterFirst, opBeforeLast);
+
+        var balanceRetBeforeLast = ((balanceRetAfterFirst * e6 + opBeforeLast * retAfterRate * e6) / e6) / retAfterRate;
+        //console.log(balanceRetAfterFirst, opBeforeLast, balance);
+        // 分两段计算
+        var dingtou = 0;
+        var calcLevel = this.calcLevel();
+        ////已知定投1值
+        if (calcLevel === 2) {
+            console.log("--if--");
+            var level1 = this.startAge + this.phaseYear1,
+                sumLevel1Balance = this.existingSum;
+            //console.log(this.startAge, level1, this.phaseAmount1, sumLevel1Balance, retAfterRate, retBeforerRate);
+
+            for (var n = this.startAge; n < level1; n++) {
+                sumLevel1Balance = ((sumLevel1Balance * e6 + this.phaseAmount1 * e6) / e6) * retBeforerRate;
+                //console.log(n, sumLevel1Balance);
+            }
+
+            var level2 = level1 + this.phaseYear2,
+                q = 0;
+            //console.log(level1, level2);
+            for (var n = level1; n < level2; n++) {
+                var y = n - level1 + 1,
+                    p = Math.pow(retBeforerRate, y);
+                q = (q * e6 + p * e6) / e6;
+                //console.log(n, y, q);
+            }
+
+            var k = sumLevel1Balance * Math.pow(retBeforerRate, this.phaseYear2);
+            this.optimalInvestments['level2'] = ((balanceRetBeforeLast * e6 - k * e6) / e6) / q;
+            dingtou = ((balanceRetBeforeLast * e6 - k * e6) / e6) / q;
+        }
+        ////已知定投2值
+        else if (calcLevel === 1) {
+            //console.log(balanceRetBeforeLast);
+            console.log("--elseif--");
+            var level1 = this.startAge + this.phaseYear1,
+                level2 = level1 + this.phaseYear2,
+                ip2 = this.phaseAmount2;
+            var sumLevel2Balance = balanceRetBeforeLast;
+            for (var n = this.retAge; n > level1; n--) {
+                var age = n - 1;
+                sumLevel2Balance = ((sumLevel2Balance * e6 / retBeforerRate) - ip2 * e6) / e6;
+                //console.log(n, age, sumLevel2Balance);
+            }
+
+            //console.log(sumLevel2Balance);
+            var q = 0;
+            for (var n = this.startAge; n < level1; n++) {
+                var i = n - this.startAge + 1,
+                    p = Math.pow(retBeforerRate, i);
+                q = (q * e6 + p * e6) / e6;
+                //console.log(n, i, q);
+            }
+            var k = this.existingSum * Math.pow(retBeforerRate, this.phaseYear1);
+            this.optimalInvestments['level1'] = ((sumLevel2Balance * e6 - k * e6) / e6) / q;
+            dingtou = ((sumLevel2Balance * e6 - k * e6) / e6) / q;
+            //console.log(dingtou);
+        }
+        ///
+        else {
+            console.log("--else--");
+            var q = 0;
+            for (var n = this.retAge; n > this.startAge; n--) {
+                var age = n - 1;
+                var y = n - this.startAge,
+                    p = Math.pow(retBeforerRate, y);
+                q = (q * e6 + p * e6) / e6;
+                //console.log(n, age, y, p, q);
+            }
+
+            var k = this.existingSum * Math.pow(retBeforerRate, this.ageDiff);
+            this.optimalInvestments['level'] = ((balanceRetBeforeLast * e6 - k * e6) / e6) / q;
+            dingtou = ((balanceRetBeforeLast * e6 - k * e6) / e6) / q;
+        }
+
+        console.log(this.retAge, balanceRetBeforeLast);
+        console.log(this.optimalInvestments);
+
+        var _balance = balanceRetBeforeLast * e6 / e6,
+            level2Start = this.retAge - this.phaseYear2,
+            input = 0;
+        //处理 退休-开始退休的时间段
+        for (var n = this.retAge - 1; n >= this.startAge; n--) {
+            var age = n,
+                output = 0;
+            console.log(n, age, _balance);
+
+            var item = {age: age, input: 0, inputLevel1: 0, inputLevel2: 0, output: output, balance: _balance};
+
+            // 处理 退休-阶段2 的时间段
+            if (calcLevel === 1) {
+                if (n >= level2Start) {
+                    input = this.phaseAmount2;
+                    item["inputLevel2"] = input;
+                } else {
+                    input = this.optimalInvestments['level1'];
+                    this.phaseAmount1 = input;
+                    item["inputLevel1"] = input;
+                }
+            } else if (calcLevel === 2) {
+                if (n >= level2Start) {
+                    input = this.optimalInvestments['level2'];
+                    this.phaseAmount2 = input;
+                    item["inputLevel2"] = input;
+                } else {
+                    input = this.phaseAmount1;
+                    item["inputLevel1"] = input;
+                }
+            } else {
+                input = this.optimalInvestments['level'];
+            }
+            item["input"] = input;
+            _balance = ((_balance / retBeforerRate - input) * e6) / e6;
+
+            //item["balance"] = _balance;
+
+            if (age === this.startAge) {
+                item["input"] = item["input"] + (this.existingSum * e6) / e6;
+            }
+
+            inputSum += input;
+            balanceArr.push(item);
+            console.log(item)
+        }
+
+        this.optimalInvestment = dingtou;
+        this.balanceArr = balanceArr;
+        this.outputSum = outputSum;
+        this.inputSum = inputSum;
+        this.balance = 0;
+        //this.optimalInvestments = dingtou2;
+    }
+
+    Yanglao.prototype.calcCPI = function (capital, rate, _time) {
+        return capital * Math.pow((1 + (rate / 100)), parseInt(_time));
+    }
+
+    Yanglao.prototype.toHtml = function () {
+
+        var $html = $("<table class='table table-striped'></table>"),
+            len = this.balanceArr.length;
+
+        $html.append("<thead><tr><th>年龄</th><th>投入</th><th>支出</th><th>净投入</th><th>余额</th></tr></thead>");
+
+        var e4 = 1e4,
+            body = "<tbody>";
+
+        for (var i = 0; i < len; i++) {
+            var item = this.balanceArr[i],
+                input = parseInt(item["input"] * e4) / e4,
+                output = parseInt(item['output'] * e4) / e4,
+                diff = (input * e4 - output * e4) / e4,
+                balance = parseInt(item['balance'] * e4) / e4;
+
+            body += "<tr>";
+            body += "<td>" + item['age'] + "</td>";
+            body += "<td>" + (input) + "</td>";
+            body += "<td>" + (output) + "</td>";
+            body += "<td>" + diff + "</td>";
+            body += "<td>" + (balance) + "</td>";
+            body += "</tr>";
+        }
+
+        body += "</tbody>";
+
+        $html = $html.append(body);
+        return $html;
+    }
+
+    Yanglao.prototype.getInputSum = function () {
+        return this.round(this.inputSum, 4);
+    }
+    Yanglao.prototype.getOutputSum = function () {
+        return this.round(this.outputSum, 4);
+    }
+    Yanglao.prototype.getOptimalInvestment = function () {
+        return this.round(this.optimalInvestment, 4);
+    }
+    Yanglao.prototype.getOptimalInvestments = function () {
+        var that = this,
+            o = null;
+        if (that.optimalInvestments) {
+            o = {
+                "level": that.optimalInvestments["level"] ? that.round(that.optimalInvestments["level"], 4) : 0,
+                "level1": that.optimalInvestments["level1"] ? that.round(that.optimalInvestments["level1"], 4) : 0,
+                "level2": that.optimalInvestments["level2"] ? that.round(that.optimalInvestments["level2"], 4) : 0
+            }
+        }
+
+        return o;
+    }
+    Yanglao.prototype.getBalance = function () {
+        return this.round(this.balance, 4);
+    }
+    Yanglao.prototype.round = function (num, len) {
+        var e = 1;
+        for (var i = 0; i < len; i++) {
+            e = e * 10;
+        }
+        return parseInt(num * e) / e;
+    }
+    //判断需要计算第几阶段的 最优定投值
+    Yanglao.prototype.calcLevel = function () {
+        var type = 0; //默认
+        if (this.phaseAmount1 > 0 && this.phaseYear1 > 0 && this.phaseYear2 > 0 && this.phaseAmount2 <= 0) {
+            type = 2;
+        } else if (this.phaseAmount2 > 0 && this.phaseYear2 > 0 && this.phaseYear1 > 0 && this.phaseAmount1 <= 0) {
+            type = 1;
+        }
+        return type;
+    }
+    Yanglao.prototype.getPhaseAmount1 = function () {
+        return this.round(this.phaseAmount1, 4);
+    }
+    Yanglao.prototype.getPhaseAmount2 = function () {
+        return this.round(this.phaseAmount2, 4);
+    }
+</script>
+</html>
