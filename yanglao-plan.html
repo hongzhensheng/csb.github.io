@@ -281,6 +281,8 @@
         });
 
         $("#calc2").on("click", function () {
+            (parseInt($phaseYear1.val()) == ($retAge.val() - $startAge.val())) && $phaseAmount1.val(0);
+
             if (($phaseAmount1.val() > 0 && $phaseAmount2.val() > 0)) {
                 alert("请设置 阶段1 或 阶段2 的定投金额，至少一个为0!")
                 return false;
@@ -288,6 +290,7 @@
                 alert("请设置 阶段1 或 阶段2 的定投金额，不能同时为 空!")
                 return false;
             }
+
             $phaseAmount2.val() > 0 && $phaseAmount1.val(0);
 
             var error = checkInput();
