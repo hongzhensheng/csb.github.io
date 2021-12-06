@@ -332,11 +332,11 @@
             var dingtou = obj.getOptimalInvestments();
             console.log(dingtou)
             //$phaseAmount1.val(obj.getOptimalInvestment());
-            if (dingtou.level1 > 0) {
+            if (dingtou.level1 !== 0) {
                 tips += "<p>当 <strong>阶段2</strong> 的定投金额为: " + obj.phaseAmount2 + " 时,</p>";
                 tips += "<p><strong>阶段1</strong> 的最佳定投金额为: " + dingtou.level1 + "</p>";
                 $phaseAmount1.val(dingtou.level1);
-            } else if (dingtou.level2 > 0) {
+            } else if (dingtou.level2 !== 0) {
                 tips += "<p>当 <strong>阶段1</strong> 的定投金额为: " + obj.phaseAmount1 + " 时,</p>";
                 tips += "<p><strong>阶段2</strong> 的最佳定投金额为: " + dingtou.level2 + "</p>";
                 $phaseAmount2.val(dingtou.level2);
@@ -721,9 +721,9 @@
     //判断需要计算第几阶段的 最优定投值
     Yanglao.prototype.calcLevel = function () {
         var type = 0; //默认
-        if (this.phaseAmount1 > 0 && this.phaseYear1 > 0 && this.phaseYear2 > 0 && this.phaseAmount2 <= 0) {
+        if ((this.phaseAmount1 !== 0 || this.phaseAmount1 !== '') && this.phaseYear1 > 0 && this.phaseYear2 > 0 && this.phaseAmount2 <= 0) {
             type = 2;
-        } else if (this.phaseAmount2 > 0 && this.phaseYear2 > 0 && this.phaseYear1 > 0 && this.phaseAmount1 <= 0) {
+        } else if ((this.phaseAmount2 !== 0 || this.phaseAmount2 !== '') && this.phaseYear2 > 0 && this.phaseYear1 > 0 && this.phaseAmount1 <= 0) {
             type = 1;
         }
         return type;
