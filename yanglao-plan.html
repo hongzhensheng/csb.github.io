@@ -341,8 +341,8 @@
                 tips += "<p><strong>阶段2</strong> 的最佳定投金额为: " + dingtou.level2 + "</p>";
                 $phaseAmount2.val(dingtou.level2);
             } else {
-                tips = "<p>最优的定投金额为：" + obj.getOptimalInvestment() + " !</p>";
-                $phaseAmount1.val(dingtou.level1);
+                tips = "<p>最优的定投金额为：" + dingtou.level + " !</p>";
+                $phaseAmount1.val(dingtou.level);
             }
             $alertModal.find('.modal-body').html(tips);
             $alertModal.modal();
